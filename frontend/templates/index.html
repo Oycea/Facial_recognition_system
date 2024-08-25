@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+        #faces-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1000px;
+        }
+        #faces-container img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Последние 5 лиц</h1>
+    <div id="faces-container"></div>
+    <script>
+        const ws = new WebSocket("ws://localhost:8000/ws");
+        const facesContainer = document.getElementById('faces-container');
+
+        let faces = [];
+
+        function updateFaces() {
+            facesContainer.innerHTML = '';
+            faces.slice(-5).forEach(face => {
+                const img = document.createElement('img');
+                img.src = `http://localhost:8000/faces/${face.id}`;
+                facesContainer.appendChild(img);
+            });
+        }
+
+        ws.onmessage = function(event) {
+            const faceId = event.data;
+            faces.push({ id: faceId });
+            updateFaces();
+        };
+
+        async function fetchInitialFaces() {
+            const response = await fetch('/faces');
+            const initialFaces = await response.json();
+            faces = initialFaces;
+            updateFaces();
+        }
+
+        window.onload = fetchInitialFaces;
+    </script>
+</body>
+</html>
