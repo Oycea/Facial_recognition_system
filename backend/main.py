@@ -32,8 +32,8 @@ async def notify_clients(face_id: str):
 async def get_face(face_id: str):
     try:
         for face in faces:
-            if face["id"] == face_id:
-                return Response(content=face["face_file"], media_type="image/jpeg")
+            if face['id'] == face_id:
+                return Response(content=face['face_file'], media_type='image/jpeg')
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Face not found'
@@ -46,14 +46,14 @@ async def get_face(face_id: str):
 
 @app.get("/faces")
 async def get_last_five_faces():
-    return [{"id": face["id"]} for face in faces[-5:]]
+    return [{'id': face['id']} for face in faces[-5:]]
 
 
 @app.post("/upload_face")
 async def load_face(file: UploadFile = File(...)):
     face_id = str(uuid.uuid4())
-    face_info = {"id": face_id, "face_file": await file.read()}
+    face_info = {'id': face_id, 'face_file': await file.read()}
     faces.append(face_info)
 
     await notify_clients(face_id)
-    return {"face_id": face_id}
+    return {'face_id': face_id}

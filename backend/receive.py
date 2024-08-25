@@ -36,7 +36,7 @@ def process_screen(ch, method, properties, body):
     scr = cv2.imdecode(screen_list, cv2.IMREAD_COLOR)
 
     if scr is None:
-        print("Failed to decode image")
+        print('Failed to decode image')
         return
 
     faces = face_detector(scr)
