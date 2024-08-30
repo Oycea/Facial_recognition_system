@@ -59,7 +59,7 @@ connection_params = pika.ConnectionParameters(
 connection = pika.BlockingConnection(connection_params)
 channel = connection.channel()
 
-channel.queue_declare(queue=RABBITMQ_QUEUE, durable=True)
+channel.queue_declare(queue=RABBITMQ_QUEUE, arguments={"x-max-priority": 10})
 
 channel.basic_consume(queue=RABBITMQ_QUEUE, auto_ack=True,
                       on_message_callback=process_screen)

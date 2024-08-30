@@ -39,7 +39,7 @@
     <h1>Последние 5 лиц</h1>
     <div id="faces-container"></div>
     <script>
-        const ws = new WebSocket("ws://localhost:8000/ws");
+        const ws = new WebSocket("ws://46.229.182.234:8080/ws");
         const facesContainer = document.getElementById('faces-container');
 
         let faces = [];
@@ -48,7 +48,7 @@
             facesContainer.innerHTML = '';
             faces.slice(-5).forEach(face => {
                 const img = document.createElement('img');
-                img.src = `http://localhost:8000/faces/${face.id}`;
+                img.src = `http://46.229.182.234:8080/faces/${face.id}`;
                 facesContainer.appendChild(img);
             });
         }
@@ -60,7 +60,7 @@
         };
 
         async function fetchInitialFaces() {
-            const response = await fetch('/faces');
+            const response = await fetch('http://localhost:8000/faces');
             const initialFaces = await response.json();
             faces = initialFaces;
             updateFaces();
