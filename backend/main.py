@@ -121,7 +121,7 @@ async def get_last_five_faces():
     try:
         with open_conn() as connection:
             with connection.cursor() as cursor:
-                cursor.execute("SELECT id FROM faces ORDER BY id DESC LIMIT 5")
+                cursor.execute("SELECT id FROM faces ORDER BY created_at DESC LIMIT 5")
                 faces = cursor.fetchall()
 
                 logger.info('Retrieved last five faces successfully')
