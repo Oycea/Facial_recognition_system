@@ -60,7 +60,7 @@
         };
 
         async function fetchInitialFaces() {
-            const response = await fetch('http://localhost:8000/faces');
+            const response = await fetch('http://46.229.182.234:8080/faces');
             const initialFaces = await response.json();
             faces = initialFaces;
             updateFaces();
